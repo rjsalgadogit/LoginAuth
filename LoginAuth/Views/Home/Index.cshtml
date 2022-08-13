@@ -24,8 +24,11 @@
                 Password: $('#txt_pass').val()
             },
             success: function (response) {
-                console.log(response);
-                alert(JSON.stringify(response));
+
+                if (response != '')
+                    alert('You are authenticated!');
+                else
+                    alert('Login failed.');
             }
         });
     }
