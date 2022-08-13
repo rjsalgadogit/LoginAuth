@@ -9,11 +9,18 @@
     <div style="width: 30%; margin: 0 auto">
         <input class="form-control mb-2" type="text" placeholder="Username" id="txt_user" />
         <input class="form-control mb-2" type="text" placeholder="Password" id="txt_pass" />
-        <button class="btn btn-primary" onclick="login();">Login</button>
+        <div>
+            <button class="btn btn-primary mb-2" onclick="login();">Login</button>
+        </div>
+        <div>
+            <button class="btn btn-success" onclick="authenticate();">Authenticate</button>
+        </div>
     </div>
 </div>
 
 <script>
+    var token = '';
+
     function login() {
         $.ajax({
             type: 'POST',
@@ -24,12 +31,32 @@
                 Password: $('#txt_pass').val()
             },
             success: function (response) {
-
-                if (response != '')
+                if (response != '') {
                     alert('You are authenticated!');
+                    token = response;
+                }
                 else
                     alert('Login failed.');
             }
         });
+    }
+
+    function authenticate() {
+        $.ajax({
+            type: 'POST',
+            url: '/Home/Authenticate',
+            dataType: 'json',
+            headers: { "Authorization": "Bearer " + token },
+            success: function (response) {
+
+                if (response.isAuthenticated)
+                    alert('You are authenticated!');
+                else
+                    alert('Not authenticated.');
+            },
+            error: function (err) {
+                alert(JSON.stringify(err));
+            }
+        })
     }
 </script>
