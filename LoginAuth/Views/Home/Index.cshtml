@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div style="width: 30%; margin: 0 auto">
+        <input class="form-control mb-2" type="text" placeholder="Username" id="txt_user" />
+        <input class="form-control mb-2" type="text" placeholder="Password" id="txt_pass" />
+        <button class="btn btn-primary" onclick="login();">Login</button>
+    </div>
+</div>
+
+<script>
+    function login() {
+        $.ajax({
+            type: 'POST',
+            url: '/Home/Login',
+            dataType: 'json',
+            data: {
+                Username: $('#txt_user').val(),
+                Password: $('#txt_pass').val()
+            },
+            success: function (response) {
+                console.log(response);
+                alert(JSON.stringify(response));
+            }
+        });
+    }
+</script>
