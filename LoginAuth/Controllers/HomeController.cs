@@ -46,6 +46,12 @@ namespace LoginAuth.Controllers
         }
 
         [Authorize]
+        public IActionResult TestLink(string link)
+        {
+            return Json(link);
+        }
+
+        [Authorize]
         public IActionResult Authenticate()
         {
             var currentUser = GetCurrentUser();

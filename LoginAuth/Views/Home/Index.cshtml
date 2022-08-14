@@ -6,14 +6,15 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    <div style="width: 30%; margin: 0 auto">
-        <input class="form-control mb-2" type="text" placeholder="Username" id="txt_user" />
-        <input class="form-control mb-2" type="text" placeholder="Password" id="txt_pass" />
-        <div>
-            <button class="btn btn-primary mb-2" onclick="login();">Login</button>
-        </div>
-        <div>
-            <button class="btn btn-success" onclick="authenticate();">Authenticate</button>
+    <div style="width: 300px; margin: 0 auto">
+        <input type="text" class="form-control mb-2" placeholder="Username" id="txt_user" />
+        <input type="text" class="form-control mb-2" placeholder="Password" id="txt_pass" />
+        <div><button type="button" class="btn btn-primary mb-2" onclick="login();">Login</button></div>
+        <div><button type="button" class="btn btn-success mb-2" onclick="authenticate();">Authenticate</button></div>
+
+        <div style="display: none" id="test_link_wrapper">
+            <input type="text" class="form-control mb-2" placeholder="Enter link here..." id="txt_link" />
+            <button type="button" class="btn btn-primary" onclick="testLink();">Test Link</button>
         </div>
     </div>
 </div>
@@ -34,6 +35,7 @@
                 if (response != '') {
                     alert('You are authenticated!');
                     token = response;
+                    $('#test_link_wrapper').css('display', 'block');
                 }
                 else
                     alert('Login failed.');
@@ -49,14 +51,32 @@
             headers: { "Authorization": "Bearer " + token },
             success: function (response) {
 
-                if (response.isAuthenticated)
+                if (response.isAuthenticated)   {
                     alert('You are authenticated!');
+                    $('#test_link_wrapper').css('display', 'block');
+                }
                 else
                     alert('Not authenticated.');
             },
             error: function (err) {
                 alert(JSON.stringify(err));
             }
-        })
+        });
+    }
+
+    function testLink() {
+        $.ajax({
+            type: 'POST',
+            url: '/Home/TestLink',
+            dataType: 'json',
+            data: { link: $('#txt_link').val() },
+            headers: { "Authorization": "Bearer " + token },
+            success: function (response) {
+                window.location = response;
+            },
+            error: function (err) {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 </script>
